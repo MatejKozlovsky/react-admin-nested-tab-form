@@ -2,24 +2,19 @@ import {
   Admin,
   Resource,
   ListGuesser,
-  EditGuesser,
+  // EditGuesser,
   ShowGuesser,
 } from "react-admin";
 import { Layout } from "./Layout";
 import { dataProvider } from "./dataProvider";
+import { NestedForm } from "./NestedForm";
 
 export const App = () => (
   <Admin layout={Layout} dataProvider={dataProvider}>
     <Resource
-      name="posts"
+      name="data"
       list={ListGuesser}
-      edit={EditGuesser}
-      show={ShowGuesser}
-    />
-    <Resource
-      name="comments"
-      list={ListGuesser}
-      edit={EditGuesser}
+      edit={NestedForm}
       show={ShowGuesser}
     />
   </Admin>
