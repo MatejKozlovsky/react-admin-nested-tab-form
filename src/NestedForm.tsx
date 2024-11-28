@@ -5,14 +5,53 @@ import {
   TabbedShowLayout,
   required,
   minLength,
-  maxLength
+  maxLength,
+  // TabbedFormTabs
 } from 'react-admin';
 
-const validateField = [required(), minLength(2), maxLength(15)];
+const MIN_IMPUT_LENGTH = 2;
+const MAX_IMPUT_LENGTH = 15;
+
+const validateField = [
+  required(), 
+  minLength(MIN_IMPUT_LENGTH), 
+  maxLength(MAX_IMPUT_LENGTH)
+];
+
+const formValidation = (form: any) => {
+  const errors: any = {};
+  Object.getOwnPropertyNames(form).forEach((index: string) => {
+    if(index == 'id') {
+      return
+    }
+    if(!form[index]) {
+      errors[index] = 'ra.validation.required'
+      return
+    }
+    if(form[index].trim().length < 2) {
+      errors[index] = {
+        message: 'ra.validation.minLength',
+        args: { min: MIN_IMPUT_LENGTH }
+      }
+      return
+    }
+    if(form[index].trim().length > 15) {
+      errors[index] = {
+        message: 'ra.validation.maxLength',
+        args: { max: MAX_IMPUT_LENGTH }
+      }
+      return
+    }
+  });
+  return errors
+}
 
 export const NestedForm = () => (
-  <Edit>
-    <TabbedForm syncWithLocation={false}>
+  <Edit redirect="show">
+    <TabbedForm 
+      syncWithLocation={false} 
+      validate={formValidation}
+    >
       <TabbedForm.Tab label="Step 1">
         <TabbedShowLayout syncWithLocation={false}>
           <TabbedShowLayout.Tab label="Step 1.1">
